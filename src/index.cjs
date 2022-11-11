@@ -1,19 +1,15 @@
-const { readFileSync, unlinkSync } = require("node:fs")
-const { sep } = require("node:path")
-
 module.exports = async function getFileExports(path) {
-	const i = path?.lastIndexOf(sep)
-	if (i === undefined) throw new Error("`path` must be of type `string`.")
-	if (i < 0) throw new Error(`Invalid path (${path}).`)
-	const outfile = `${path.slice(0, i)}/tmp.cjs`
-	await require("esbuild").build({
+	if (typeof path !== "string") {
+		throw new Error("`path` must be of type `string`.")
+	}
+	const output = await require("esbuild").build({
 		entryPoints: [path],
 		bundle: true,
 		format: "cjs",
 		platform: "node",
-		outfile,
+		write: false,
 	})
-	const bundle = readFileSync(outfile, "utf8")
-	unlinkSync(outfile)
-	return require("node-eval")(bundle, outfile)
+	const bundle = new TextDecoder().decode(output.outputFiles[0]?.contents)
+	if (!bundle) return {}
+	return require("node-eval")(bundle, path.replace(/.[a-zA-Z]{2,3}$/, ".cjs"))
 }
