@@ -1,6 +1,6 @@
 {
 	"name": "get-file-exports",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "Dynamic import for JavaScript and TypeScript files for both CommonJS and ECMAScript modules.",
 	"author": "alexandre-fernandez",
 	"license": "MIT",
