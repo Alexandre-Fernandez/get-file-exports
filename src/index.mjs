@@ -8,6 +8,7 @@ export default async function getFileExports(path) {
 	const output = await esbuild.build({
 		entryPoints: [path],
 		bundle: true,
+		external: ["esbuild"],
 		format: "cjs",
 		platform: "node",
 		write: false,

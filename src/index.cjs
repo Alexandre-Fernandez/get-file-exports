@@ -5,6 +5,7 @@ module.exports = async function getFileExports(path) {
 	const output = await require("esbuild").build({
 		entryPoints: [path],
 		bundle: true,
+		external: ["esbuild"],
 		format: "cjs",
 		platform: "node",
 		write: false,
